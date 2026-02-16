@@ -8,7 +8,7 @@ import { useToast } from '../components/ui';
 import { Button, Input } from '../components/ui';
 import PhoneInput from '../components/PhoneInput';
 import CartItem from '../components/cart/CartItem';
-import { sendWhatsAppOrder, formatNigerianPhone, isValidNigerianPhone } from '../utils/whatsapp';
+import {  formatNigerianPhone, isValidNigerianPhone } from '../utils/whatsapp';
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -111,8 +111,8 @@ const Checkout = () => {
         }
       }
 
-      // Send WhatsApp notification
-      sendWhatsAppOrder({
+      // Build WhatsApp URL
+      const whatsappData = {
         orderId: docRef.id,
         customerName: formData.name,
         customerPhone: formattedPhone,
@@ -123,14 +123,47 @@ const Checkout = () => {
           price: item.price
         })),
         totalPrice: cartTotal
-      });
+      };
 
-      // Clear cart
+      const storeWhatsApp = '2348052465801';
+      const itemsList = whatsappData.items
+        .map((item, index) => 
+          `${index + 1}. ${item.name}\n   Size: ${item.size}\n   Quantity: ${item.quantity}\n   Price: ₦${(item.price * item.quantity).toLocaleString('en-NG')}`
+        )
+        .join('\n\n');
+
+      const message = `*NEW ORDER - LILUXE STORE*
+
+*Order ID:* ${whatsappData.orderId}
+
+*Customer Details:*
+Name: ${whatsappData.customerName}
+Phone: ${whatsappData.customerPhone}
+
+*Items Ordered:*
+${itemsList}
+
+*Total Amount:* ₦${whatsappData.totalPrice.toLocaleString('en-NG')}
+
+---
+Order placed on ${new Date().toLocaleString('en-NG', {
+        dateStyle: 'medium',
+        timeStyle: 'short'
+      })}`;
+
+      const encodedMessage = encodeURIComponent(message);
+      const whatsappURL = `https://wa.me/${storeWhatsApp}?text=${encodedMessage}`;
+
+      // Clear cart first
       clearCart();
 
-      // Show success and redirect
+      // Redirect to success page with WhatsApp link
+      navigate(`/order-success/${docRef.id}`, { 
+        state: { whatsappURL } 
+      });
+
+      // Show success message
       toast.success('Order placed successfully!');
-      navigate(`/order-success/${docRef.id}`);
     } catch (error) {
       console.error('Error placing order:', error);
       toast.error('Failed to place order. Please try again.');
