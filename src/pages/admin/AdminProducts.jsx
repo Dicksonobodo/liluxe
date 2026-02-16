@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
-import { deleteProductImage } from '../../utils/ImageUpload';
+import { deleteProductImage } from '../../utils/imageUpload';
 import { Button } from '../../components/ui';
 import { useToast } from '../../components/ui';
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -62,19 +63,63 @@ const AdminProducts = () => {
     );
   }
 
+  // Filter products by search query
+  const filteredProducts = searchQuery
+    ? products.filter(product =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.category.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : products;
+
   return (
     <div>
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
           <h1 className="font-serif text-3xl font-semibold mb-2">Products</h1>
-          <p className="text-stone-600">{products.length} total products</p>
+          <p className="text-stone-600">{filteredProducts.length} of {products.length} products</p>
         </div>
         <Button onClick={() => navigate('/admin/products/new')}>
           Add New Product
         </Button>
       </div>
 
-      {products.length === 0 ? (
+      {/* Search Bar */}
+      <div className="mb-6">
+        <div className="relative max-w-md">
+          <input
+            type="text"
+            placeholder="Search products by name or category..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full px-4 py-3 pl-12 border border-stone-300 focus:outline-none focus:border-stone-900"
+          />
+          <svg
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-900"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
+      </div>
+
+      {filteredProducts.length === 0 ? (
         <div className="bg-white border border-stone-200 p-16 text-center">
           <svg
             className="w-16 h-16 mx-auto text-stone-300 mb-4"
@@ -120,7 +165,7 @@ const AdminProducts = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-200">
-                {products.map((product) => {
+                {filteredProducts.map((product) => {
                   const totalStock = product.sizes?.reduce((sum, s) => sum + s.stock, 0) || 0;
                   
                   return (
@@ -178,7 +223,7 @@ const AdminProducts = () => {
 
           {/* Mobile Cards */}
           <div className="md:hidden divide-y divide-stone-200">
-            {products.map((product) => {
+            {filteredProducts.map((product) => {
               const totalStock = product.sizes?.reduce((sum, s) => sum + s.stock, 0) || 0;
               
               return (

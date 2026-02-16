@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { collection, addDoc, doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
-import { uploadProductImage, validateImage } from '../../utils/ImageUpload';
+import { uploadProductImage, validateImage } from '../../utils/imageUpload';
 import { Button, Input } from '../../components/ui';
 import { useToast } from '../../components/ui';
 
@@ -22,6 +22,7 @@ const ProductForm = () => {
   const [sizes, setSizes] = useState([{ size: 'S', stock: 0 }]);
   const [existingImages, setExistingImages] = useState([]);
   const [newImages, setNewImages] = useState([]);
+  const [colors, setColors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
 
@@ -48,6 +49,7 @@ const ProductForm = () => {
         });
         setSizes(data.sizes || [{ size: 'S', stock: 0 }]);
         setExistingImages(data.images || []);
+        setColors(data.colors || []);
       } else {
         toast.error('Product not found');
         navigate('/admin/products');
@@ -97,6 +99,20 @@ const ProductForm = () => {
     if (sizes.length > 1) {
       setSizes(sizes.filter((_, i) => i !== index));
     }
+  };
+
+  const addColor = () => {
+    setColors([...colors, { name: '', hex: '#000000' }]);
+  };
+
+  const updateColor = (index, field, value) => {
+    const updated = [...colors];
+    updated[index][field] = value;
+    setColors(updated);
+  };
+
+  const removeColor = (index) => {
+    setColors(colors.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e) => {
@@ -151,6 +167,10 @@ const ProductForm = () => {
           size: s.size.trim(),
           stock: s.stock
         })),
+        colors: colors.length > 0 ? colors.map(c => ({
+          name: c.name.trim(),
+          hex: c.hex
+        })) : [],
         averageRating: 0,
         reviewCount: 0
       };
@@ -388,6 +408,74 @@ const ProductForm = () => {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Colors (Optional) */}
+        <div className="bg-white border border-stone-200 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-xl font-serif font-semibold">Colors (Optional)</h2>
+              <p className="text-sm text-stone-600 mt-1">Add colors if this product has color variations</p>
+            </div>
+            <button
+              type="button"
+              onClick={addColor}
+              className="text-sm text-stone-900 hover:underline"
+            >
+              + Add Color
+            </button>
+          </div>
+
+          {colors.length > 0 ? (
+            <div className="space-y-4">
+              {colors.map((color, index) => (
+                <div key={index} className="flex gap-4 items-end">
+                  <div className="flex-1">
+                    <Input
+                      label={index === 0 ? "Color Name" : ""}
+                      type="text"
+                      value={color.name}
+                      onChange={(e) => updateColor(index, 'name', e.target.value)}
+                      placeholder="e.g., Black, White, Navy Blue"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className={`block text-xs uppercase tracking-wider text-stone-600 mb-2 font-medium ${index === 0 ? '' : 'invisible'}`}>
+                      Color Code
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={color.hex}
+                        onChange={(e) => updateColor(index, 'hex', e.target.value)}
+                        className="w-16 h-12 border border-stone-300 cursor-pointer"
+                      />
+                      <input
+                        type="text"
+                        value={color.hex}
+                        onChange={(e) => updateColor(index, 'hex', e.target.value)}
+                        className="flex-1 px-4 py-3 border border-stone-300 focus:outline-none focus:border-stone-900"
+                        placeholder="#000000"
+                      />
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => removeColor(index)}
+                    className={`text-red-600 hover:text-red-800 mb-3`}
+                  >
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-stone-500 italic text-center py-4">
+              No colors added. This product will not have color options.
+            </p>
+          )}
         </div>
 
         {/* Actions */}

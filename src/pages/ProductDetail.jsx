@@ -14,12 +14,13 @@ const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const toast = useToast();
-  const { product, loading } = useProduct(id);
+  const { product, loading} = useProduct(id);
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState('');
+  const [selectedColor, setSelectedColor] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [sizeError, setSizeError] = useState('');
   const [reviewRefresh, setReviewRefresh] = useState(0);
@@ -54,7 +55,7 @@ const ProductDetail = () => {
     
     setSizeError('');
     
-    addToCart(product, selectedSize, quantity);
+    addToCart(product, selectedSize, quantity, selectedColor);
     toast.success(`Added ${quantity} item(s) to cart!`);
   };
 
@@ -66,7 +67,7 @@ const ProductDetail = () => {
     
     setSizeError('');
     
-    addToCart(product, selectedSize, quantity);
+    addToCart(product, selectedSize, quantity, selectedColor);
     navigate('/checkout');
   };
 
@@ -176,6 +177,40 @@ const ProductDetail = () => {
             <p className="text-stone-600 leading-relaxed">{product.description}</p>
           </div>
 
+          {/* Color Selector (if colors available) */}
+          {product.colors && product.colors.length > 0 && (
+            <div className="mb-8">
+              <label className="block text-xs uppercase tracking-wider text-stone-600 mb-3 font-medium">
+                Color
+              </label>
+              <div className="flex flex-wrap gap-3">
+                {product.colors.map((color, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedColor(color.name)}
+                    className={`relative flex items-center gap-2 px-4 py-2 border-2 transition-all ${
+                      selectedColor === color.name
+                        ? 'border-stone-900 bg-stone-50'
+                        : 'border-stone-300 hover:border-stone-500'
+                    }`}
+                    title={color.name}
+                  >
+                    <div
+                      className="w-6 h-6 rounded-full border border-stone-300"
+                      style={{ backgroundColor: color.hex }}
+                    />
+                    <span className="text-sm font-medium">{color.name}</span>
+                    {selectedColor === color.name && (
+                      <svg className="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Size Selector */}
           <div className="mb-8">
             <SizeSelector
@@ -280,9 +315,12 @@ const ProductDetail = () => {
           <ReviewForm 
             productId={product.id} 
             onReviewSubmitted={() => {
+              // Trigger review list refresh immediately
               setReviewRefresh(prev => prev + 1);
-              // Reload product to get updated rating
-              window.location.reload();
+              // Reload page after a short delay to show new rating
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000);
             }}
           />
 

@@ -6,15 +6,18 @@ import { Button } from '../components/ui';
 
 const Home = () => {
   const { products, loading } = useProducts({ sortBy: 'newest' });
-  const featuredProducts = products.slice(0, 8);
+  const featuredProducts = products.slice(0, 4); // Show only 4 products
 
   // Category background images from Firebase Storage
-  // Replace these URLs with your actual Firebase Storage URLs
   const categoryImages = {
     clothes: "https://firebasestorage.googleapis.com/v0/b/liluxe-9c1b0.firebasestorage.app/o/categories%2Fcloths.jpeg?alt=media&token=d0d30980-a05f-4cb0-b7fb-dc49e31e25a1",
     bags: "https://firebasestorage.googleapis.com/v0/b/liluxe-9c1b0.firebasestorage.app/o/categories%2Fbag.jpeg?alt=media&token=34a476b5-cc74-4a1d-9eef-8147ab184765",
     shoes: "https://firebasestorage.googleapis.com/v0/b/liluxe-9c1b0.firebasestorage.app/o/categories%2Fshoe.jpeg?alt=media&token=63e96e79-496b-45f6-9bc1-ae70b9694545"
   };
+
+  // Category background images from Firebase Storage
+  // Replace these URLs with your actual Firebase Storage URLs
+  
 
   return (
     <div>

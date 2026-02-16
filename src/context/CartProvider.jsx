@@ -23,11 +23,13 @@ const CartProvider = ({ children }) => {
   }, [cart]);
 
   // Add item to cart
-  const addToCart = (product, selectedSize, quantity = 1) => {
+  const addToCart = (product, selectedSize, quantity = 1, selectedColor = '') => {
     setCart(prevCart => {
-      // Check if item with same product and size already exists
+      // Check if item with same product, size, and color already exists
       const existingItemIndex = prevCart.findIndex(
-        item => item.id === product.id && item.selectedSize === selectedSize
+        item => item.id === product.id && 
+                item.selectedSize === selectedSize &&
+                item.selectedColor === selectedColor
       );
 
       if (existingItemIndex > -1) {
@@ -46,6 +48,7 @@ const CartProvider = ({ children }) => {
             image: product.images?.[0] || '/placeholder.png',
             category: product.category,
             selectedSize,
+            selectedColor,
             quantity,
             maxStock: product.sizes?.find(s => s.size === selectedSize)?.stock || 0
           }
@@ -55,22 +58,28 @@ const CartProvider = ({ children }) => {
   };
 
   // Remove item from cart
-  const removeFromCart = (productId, selectedSize) => {
+  const removeFromCart = (productId, selectedSize, selectedColor = '') => {
     setCart(prevCart =>
-      prevCart.filter(item => !(item.id === productId && item.selectedSize === selectedSize))
+      prevCart.filter(item => !(
+        item.id === productId && 
+        item.selectedSize === selectedSize &&
+        item.selectedColor === selectedColor
+      ))
     );
   };
 
   // Update item quantity
-  const updateQuantity = (productId, selectedSize, newQuantity) => {
+  const updateQuantity = (productId, selectedSize, newQuantity, selectedColor = '') => {
     if (newQuantity < 1) {
-      removeFromCart(productId, selectedSize);
+      removeFromCart(productId, selectedSize, selectedColor);
       return;
     }
 
     setCart(prevCart =>
       prevCart.map(item =>
-        item.id === productId && item.selectedSize === selectedSize
+        item.id === productId && 
+        item.selectedSize === selectedSize &&
+        item.selectedColor === selectedColor
           ? { ...item, quantity: Math.min(newQuantity, item.maxStock) }
           : item
       )

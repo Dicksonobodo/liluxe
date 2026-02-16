@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const CartItem = ({ item, onUpdateQuantity, onRemove, compact = false }) => {
-  const { id, name, price, image, selectedSize, quantity, maxStock } = item;
+  const { id, name, price, image, selectedSize, selectedColor, quantity, maxStock } = item;
 
   return (
     <div className={`flex gap-4 ${!compact && 'pb-6 border-b border-stone-200'}`}>
@@ -25,7 +25,10 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, compact = false }) => {
           </h3>
         </Link>
         
-        <p className="text-sm text-stone-600 mb-2">Size: {selectedSize}</p>
+        <p className="text-sm text-stone-600">
+          Size: {selectedSize}
+          {selectedColor && ` • Color: ${selectedColor}`}
+        </p>
         
         <p className={`font-medium ${compact ? 'text-sm' : 'text-base'}`}>
           ₦{price.toLocaleString('en-NG')}
@@ -36,7 +39,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, compact = false }) => {
             {/* Quantity Controls */}
             <div className="flex items-center border border-stone-300">
               <button
-                onClick={() => onUpdateQuantity(id, selectedSize, quantity - 1)}
+                onClick={() => onUpdateQuantity(id, selectedSize, quantity - 1, selectedColor)}
                 className="px-3 py-1 hover:bg-stone-100 transition-colors"
               >
                 -
@@ -45,7 +48,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, compact = false }) => {
                 {quantity}
               </span>
               <button
-                onClick={() => onUpdateQuantity(id, selectedSize, quantity + 1)}
+                onClick={() => onUpdateQuantity(id, selectedSize, quantity + 1, selectedColor)}
                 disabled={quantity >= maxStock}
                 className="px-3 py-1 hover:bg-stone-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -55,7 +58,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, compact = false }) => {
 
             {/* Remove Button */}
             <button
-              onClick={() => onRemove(id, selectedSize)}
+              onClick={() => onRemove(id, selectedSize, selectedColor)}
               className="text-sm text-stone-600 hover:text-red-600 transition-colors"
             >
               Remove
