@@ -11,8 +11,8 @@ const Home = () => {
   // Category background images from Firebase Storage
   const categoryImages = {
     clothes: "https://firebasestorage.googleapis.com/v0/b/liluxe-9c1b0.firebasestorage.app/o/categories%2Fnewcloth.webp?alt=media&token=7684a1f2-aba1-460b-96c2-4cfb009d6f52",
-    bags: "https://firebasestorage.googleapis.com/v0/b/liluxe-9c1b0.firebasestorage.app/o/categories%2Fnewbag.jpg?alt=media&token=16f4d971-d3b3-43a9-9cd8-c4be7e33c79a",
-    shoes: "https://firebasestorage.googleapis.com/v0/b/liluxe-9c1b0.firebasestorage.app/o/categories%2Fnewshoes.webp?alt=media&token=3f966e65-5bab-4ed1-b495-81794aaa86f7"
+    bags: "https://firebasestorage.googleapis.com/v0/b/liluxe-9c1b0.firebasestorage.app/o/categories%2Fnewnewbag.jpg?alt=media&token=044ae65d-16fd-41cc-928d-02ae0dd2416a",
+    shoes: "https://firebasestorage.googleapis.com/v0/b/liluxe-9c1b0.firebasestorage.app/o/categories%2Fnewnewshoe.jpg?alt=media&token=bcd220b7-1713-42e4-bd2b-ee3c632a534c"
   };
 
   // Category background images from Firebase Storage
@@ -62,7 +62,7 @@ const Home = () => {
             <div className="absolute inset-0 flex items-end p-8">
               <div>
                 <h3 className="font-serif text-3xl md:text-4xl font-semibold text-white mb-2">
-                  Clothes
+                  Cloths
                 </h3>
                 <p className="text-white/90 text-sm uppercase tracking-wider">
                   Explore Collection Here →
