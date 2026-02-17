@@ -10,9 +10,9 @@ const Home = () => {
 
   // Category background images from Firebase Storage
   const categoryImages = {
-    clothes: "https://firebasestorage.googleapis.com/v0/b/liluxe-9c1b0.firebasestorage.app/o/categories%2Fcloths.jpeg?alt=media&token=d0d30980-a05f-4cb0-b7fb-dc49e31e25a1",
-    bags: "https://firebasestorage.googleapis.com/v0/b/liluxe-9c1b0.firebasestorage.app/o/categories%2Fbag.jpeg?alt=media&token=34a476b5-cc74-4a1d-9eef-8147ab184765",
-    shoes: "https://firebasestorage.googleapis.com/v0/b/liluxe-9c1b0.firebasestorage.app/o/categories%2Fshoe.jpeg?alt=media&token=63e96e79-496b-45f6-9bc1-ae70b9694545"
+    clothes: "https://firebasestorage.googleapis.com/v0/b/liluxe-9c1b0.firebasestorage.app/o/categories%2Fnewcloth.webp?alt=media&token=7684a1f2-aba1-460b-96c2-4cfb009d6f52",
+    bags: "https://firebasestorage.googleapis.com/v0/b/liluxe-9c1b0.firebasestorage.app/o/categories%2Fnewbag.jpg?alt=media&token=16f4d971-d3b3-43a9-9cd8-c4be7e33c79a",
+    shoes: "https://firebasestorage.googleapis.com/v0/b/liluxe-9c1b0.firebasestorage.app/o/categories%2Fnewshoes.webp?alt=media&token=3f966e65-5bab-4ed1-b495-81794aaa86f7"
   };
 
   // Category background images from Firebase Storage
