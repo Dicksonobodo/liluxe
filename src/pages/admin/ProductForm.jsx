@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { collection, addDoc, doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
-import { uploadProductImage, validateImage } from '../../utils/ImageUpload';
+import { uploadProductImage, validateImage } from '../../utils/imageUpload';
 import { Button, Input } from '../../components/ui';
 import { useToast } from '../../components/ui';
 
