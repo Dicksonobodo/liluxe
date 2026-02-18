@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useProduct } from '../hooks/useProducts';
-import { useCart } from '../hooks/useCart';
-import { useWishlist } from '../hooks/useWishlist';
-import SizeSelector from '../components/product/SizeSelector';
-import ReviewForm from '../components/product/ReviewForm';
-import ReviewList from '../components/product/ReviewList';
-import { Button } from '../components/ui';
-import { useToast } from '../components/ui';
-import { ProductCardSkeleton } from '../components/ui/Skeleton';
+import { useProduct } from '../../hooks/useProducts';
+import { useCart } from '../../hooks/useCart';
+import { useWishlist } from '../../hooks/useWishlist';
+import SizeSelector from '../../components/product/SizeSelector';
+import ReviewForm from '../../components/product/ReviewForm';
+import ReviewList from '../../components/product/ReviewList';
+import { Button } from '../../components/ui';
+import { useToast } from '../../components/ui';
+import { ProductCardSkeleton } from '../../components/ui/Skeleton';
 
 const ProductDetail = () => {
   const { id } = useParams();
