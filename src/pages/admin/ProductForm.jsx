@@ -429,8 +429,9 @@ const ProductForm = () => {
           {colors.length > 0 ? (
             <div className="space-y-4">
               {colors.map((color, index) => (
-                <div key={index} className="flex gap-4 items-end">
-                  <div className="flex-1">
+                <div key={index} className="space-y-3">
+                  {/* Color Name - Full Width */}
+                  <div>
                     <Input
                       label={index === 0 ? "Color Name" : ""}
                       type="text"
@@ -439,35 +440,51 @@ const ProductForm = () => {
                       placeholder="e.g., Black, White, Navy Blue"
                     />
                   </div>
-                  <div className="flex-1">
-                    <label className={`block text-xs uppercase tracking-wider text-stone-600 mb-2 font-medium ${index === 0 ? '' : 'invisible'}`}>
-                      Color Code
-                    </label>
-                    <div className="flex gap-2">
+
+                  {/* Color Picker - Full Width on Mobile */}
+                  <div className="flex gap-2 items-center">
+                    <div className="flex-shrink-0">
+                      <label className={`block text-xs uppercase tracking-wider text-stone-600 mb-2 font-medium ${index === 0 ? '' : 'invisible'}`}>
+                        Preview
+                      </label>
                       <input
                         type="color"
                         value={color.hex}
                         onChange={(e) => updateColor(index, 'hex', e.target.value)}
                         className="w-16 h-12 border border-stone-300 cursor-pointer"
                       />
+                    </div>
+                    
+                    <div className="flex-1">
+                      <label className={`block text-xs uppercase tracking-wider text-stone-600 mb-2 font-medium ${index === 0 ? '' : 'invisible'}`}>
+                        Hex Code
+                      </label>
                       <input
                         type="text"
                         value={color.hex}
                         onChange={(e) => updateColor(index, 'hex', e.target.value)}
-                        className="flex-1 px-4 py-3 border border-stone-300 focus:outline-none focus:border-stone-900"
+                        className="w-full px-4 py-3 border border-stone-300 focus:outline-none focus:border-stone-900"
                         placeholder="#000000"
                       />
                     </div>
+
+                    {/* Remove Button */}
+                    <button
+                      type="button"
+                      onClick={() => removeColor(index)}
+                      className={`flex-shrink-0 text-red-600 hover:text-red-800 p-2 ${index === 0 ? 'mt-8' : ''}`}
+                      title="Remove color"
+                    >
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => removeColor(index)}
-                    className={`text-red-600 hover:text-red-800 mb-3`}
-                  >
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                  </button>
+
+                  {/* Divider between colors */}
+                  {index < colors.length - 1 && (
+                    <div className="border-t border-stone-200 pt-3" />
+                  )}
                 </div>
               ))}
             </div>
