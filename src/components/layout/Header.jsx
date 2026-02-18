@@ -12,7 +12,7 @@ const Header = ({ cartCount = 0, wishlistCount = 0, user = null, onLogout }) => 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
   <img 
-    src="/logo.png" 
+    src="/logo.jpeg" 
     alt="LILUXE" 
     className="h-8 md:h-10 w-auto"
   />
