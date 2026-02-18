@@ -229,20 +229,24 @@ const ProductDetail = () => {
             <label className="block text-xs uppercase tracking-wider text-stone-600 mb-3 font-medium">
               Quantity
             </label>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-10 h-10 border border-stone-300 hover:border-stone-900 transition-colors"
+                className="w-8 h-8 border border-stone-300 hover:border-stone-900 transition-colors flex items-center justify-center"
               >
                 -
               </button>
-              <span className="w-12 text-center font-medium">{quantity}</span>
+              <span className="w-10 text-center font-medium text-sm">{quantity}</span>
               <button
                 onClick={() => setQuantity(Math.min(maxQuantity, quantity + 1))}
-                className="w-10 h-10 border border-stone-300 hover:border-stone-900 transition-colors"
+                disabled={quantity >= maxQuantity}
+                className="w-8 h-8 border border-stone-300 hover:border-stone-900 transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 +
               </button>
+              <span className="text-xs text-stone-500 ml-2">
+                {maxQuantity} available
+              </span>
             </div>
           </div>
 
