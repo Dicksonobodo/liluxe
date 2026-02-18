@@ -3,15 +3,24 @@ import { Link } from 'react-router-dom';
 
 const Header = ({ cartCount = 0, wishlistCount = 0, user = null, onLogout }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   return (
     <header className="sticky top-0 bg-white border-b border-stone-200 z-30">
       <div className="max-w-screen-xl mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link to="/" className="font-serif text-2xl md:text-3xl font-semibold tracking-tight">
-            LILUXE STORE
-          </Link>
+          <Link to="/" className="flex items-center gap-2">
+  <img 
+    src="/logo.png" 
+    alt="LILUXE" 
+    className="h-8 md:h-10 w-auto"
+  />
+  {/* Optional: Keep text alongside logo */}
+  <span className="font-serif text-xl md:text-2xl font-semibold">
+    LILUXE STORE
+  </span>
+</Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
@@ -37,6 +46,25 @@ const Header = ({ cartCount = 0, wishlistCount = 0, user = null, onLogout }) => 
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </button>
+
+            {/* Profile/Sign In Icon */}
+{user ? (
+  <button
+    onClick={() => setShowDropdown(!showDropdown)}
+    className="p-2 hover:bg-stone-100 rounded-full"
+    title={user.name || 'Account'}
+  >
+    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+    </svg>
+  </button>
+) : (
+  <Link to="/auth" className="p-2 hover:bg-stone-100 rounded-full" title="Sign In">
+    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+    </svg>
+  </Link>
+)}
 
             {/* Wishlist */}
             <Link to="/wishlist" className="relative text-stone-600 hover:text-stone-900 transition-colors">
