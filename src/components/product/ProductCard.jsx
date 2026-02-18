@@ -1,8 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const ProductCard = ({ product }) => {
   const { id, name, price, images, category, averageRating, reviewCount, sizes } = product;
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   
   // Get first image or placeholder
   const mainImage = images && images.length > 0 ? images[0] : '/placeholder.png';
@@ -11,8 +13,23 @@ const ProductCard = ({ product }) => {
   const totalStock = sizes?.reduce((sum, size) => sum + (size.stock || 0), 0) || 0;
   const isOutOfStock = totalStock === 0;
 
+  const handleClick = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    // Small delay to show loader
+    setTimeout(() => {
+      navigate(`/product/${id}`);
+    }, 300);
+  };
+
   return (
-    <Link to={`/product/${id}`} className="group block">
+    <a href={`/product/${id}`} onClick={handleClick} className="group block relative">
+      {/* Loading Overlay */}
+      {loading && (
+        <div className="absolute inset-0 bg-white/80 z-10 flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-stone-900 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
       {/* Image Container */}
       <div className="relative aspect-[3/4] bg-stone-100 overflow-hidden mb-4">
         <img
@@ -72,7 +89,7 @@ const ProductCard = ({ product }) => {
           ₦{price.toLocaleString('en-NG')}
         </p>
       </div>
-    </Link>
+    </a>
   );
 };
 

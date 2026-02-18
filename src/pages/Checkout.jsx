@@ -8,7 +8,7 @@ import { useToast } from '../components/ui';
 import { Button, Input } from '../components/ui';
 import PhoneInput from '../components/PhoneInput';
 import CartItem from '../components/cart/CartItem';
-import {  formatNigerianPhone, isValidNigerianPhone } from '../utils/whatsapp';
+import { formatNigerianPhone, isValidNigerianPhone } from '../utils/whatsapp';
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -75,6 +75,7 @@ const Checkout = () => {
           productId: item.id,
           name: item.name,
           size: item.selectedSize,
+          color: item.selectedColor || '',
           quantity: item.quantity,
           price: item.price
         })),
@@ -119,6 +120,7 @@ const Checkout = () => {
         items: cart.map(item => ({
           name: item.name,
           size: item.selectedSize,
+          color: item.selectedColor || '',
           quantity: item.quantity,
           price: item.price
         })),
@@ -127,9 +129,10 @@ const Checkout = () => {
 
       const storeWhatsApp = '2348052465801';
       const itemsList = whatsappData.items
-        .map((item, index) => 
-          `${index + 1}. ${item.name}\n   Size: ${item.size}\n   Quantity: ${item.quantity}\n   Price: ₦${(item.price * item.quantity).toLocaleString('en-NG')}`
-        )
+        .map((item, index) => {
+          const colorText = item.color ? `\n   Color: ${item.color}` : '';
+          return `${index + 1}. ${item.name}\n   Size: ${item.size}${colorText}\n   Quantity: ${item.quantity}\n   Price: ₦${(item.price * item.quantity).toLocaleString('en-NG')}`;
+        })
         .join('\n\n');
 
       const message = `*NEW ORDER - LILUXE STORE*

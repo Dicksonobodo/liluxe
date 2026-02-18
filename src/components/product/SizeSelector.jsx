@@ -7,7 +7,7 @@ const SizeSelector = ({ sizes, selectedSize, onSelectSize, error }) => {
         Select Size
       </label>
       
-      <div className="grid grid-cols-4 md:grid-cols-6 gap-2">
+      <div className="grid grid-cols-5 md:grid-cols-8 gap-2">
         {sizes.map(({ size, stock }) => {
           const isOutOfStock = stock === 0;
           const isSelected = selectedSize === size;
@@ -18,7 +18,7 @@ const SizeSelector = ({ sizes, selectedSize, onSelectSize, error }) => {
               onClick={() => !isOutOfStock && onSelectSize(size)}
               disabled={isOutOfStock}
               className={`
-                px-4 py-3 border text-sm font-medium transition-all
+                px-3 py-2 border text-sm font-medium transition-all
                 ${isSelected 
                   ? 'border-stone-900 bg-stone-900 text-white' 
                   : 'border-stone-300 hover:border-stone-900'

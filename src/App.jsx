@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ToastProvider } from './components/ui';
 import AuthProvider from './context/AuthProvider';
@@ -7,6 +7,7 @@ import WishlistProvider from './context/WishlistProvider';
 import ProtectedRoute from './components/ProtectedRoute';
 import { Header, Footer, BottomNav } from './components/layout';
 import AdminLayout from './components/layout/AdminLayout';
+import PageLoader from './components/PageLoader';
 import { useAuth } from './hooks/useAuth';
 import { useCart } from './hooks/useCart';
 import { useWishlist } from './hooks/useWishlist';
@@ -62,6 +63,21 @@ function CustomerLayout() {
 }
 
 function App() {
+  const [initialLoading, setInitialLoading] = useState(true);
+
+  // Show loader for 1.5 seconds on initial load
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setInitialLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (initialLoading) {
+    return <PageLoader />;
+  }
+
   return (
     <ToastProvider>
       <AuthProvider>
