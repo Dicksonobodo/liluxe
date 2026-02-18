@@ -12,7 +12,7 @@ const Home = () => {
   const categoryImages = {
     clothes: "https://firebasestorage.googleapis.com/v0/b/liluxe-9c1b0.firebasestorage.app/o/categories%2Fnewcloth.webp?alt=media&token=7684a1f2-aba1-460b-96c2-4cfb009d6f52",
     bags: "https://firebasestorage.googleapis.com/v0/b/liluxe-9c1b0.firebasestorage.app/o/categories%2Fnewnewbag.jpg?alt=media&token=044ae65d-16fd-41cc-928d-02ae0dd2416a",
-    shoes: "https://firebasestorage.googleapis.com/v0/b/liluxe-9c1b0.firebasestorage.app/o/categories%2Fnewnewshoe.jpg?alt=media&token=bcd220b7-1713-42e4-bd2b-ee3c632a534c"
+    shoes: "https://firebasestorage.googleapis.com/v0/b/liluxe-9c1b0.firebasestorage.app/o/categories%2Fhershoe.jpg?alt=media&token=c7d490a4-a265-42af-be39-52a08d030d51"
   };
 
   // Category background images from Firebase Storage
@@ -157,7 +157,7 @@ const Home = () => {
             About LILUXE
           </h2>
           <p className="text-lg text-stone-600 leading-relaxed mb-8">
-            We believe in quality over quantity. Each piece in our collection is carefully curated to bring you timeless elegance and unmatched craftsmanship. From premium fabrics to meticulous attention to detail, LILUXE represents the pinnacle of modern luxury.
+            We believe in empowering women through premium luxe fashion that embodies confidence, elegance, and soft-life sophistication. From premium fabrics to meticulous attention to detail, LILUXE represents the pinnacle of modern luxury.
           </p>
           <Link to="/shop">
             <Button variant="secondary">
