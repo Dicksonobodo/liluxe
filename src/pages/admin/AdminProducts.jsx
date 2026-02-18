@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useProduct } from '../hooks/useProducts';
+import { useProduct } from '../../hooks/useProducts';
 import { useCart } from '../hooks/useCart';
 import { useWishlist } from '../hooks/useWishlist';
 import SizeSelector from '../components/product/SizeSelector';
