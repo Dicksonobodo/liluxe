@@ -104,14 +104,9 @@ const Header = ({ cartCount = 0, wishlistCount = 0, user = null, onLogout }) => 
                 {/* Dropdown */}
                 <div className="absolute right-0 mt-2 w-48 bg-white border border-stone-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                   <div className="py-2">
-                    {/* My Orders - Track Orders Page */}
-<Link
-  to="/track-order"
-  className="block px-4 py-2 text-sm text-stone-700 hover:bg-stone-100"
-  onClick={() => setShowDropdown(false)}
->
-  My Orders
-</Link>
+                    <Link to="/track-order" className="block px-4 py-2 text-sm hover:bg-stone-50">
+                      My Orders
+                    </Link>
                     {user.role === 'admin' && (
                       <Link to="/admin" className="block px-4 py-2 text-sm hover:bg-stone-50">
                         Admin Dashboard
