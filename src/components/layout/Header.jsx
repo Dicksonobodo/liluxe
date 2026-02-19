@@ -178,7 +178,7 @@ const Header = ({ cartCount = 0, wishlistCount = 0, user = null, onLogout }) => 
             {user ? (
               <>
                 <Link
-                  to="/orders"
+                  to="/track-order"
                   className="block text-sm uppercase tracking-wider"
                   onClick={() => setMobileMenuOpen(false)}
                 >
