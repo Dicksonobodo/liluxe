@@ -47,24 +47,26 @@ const Header = ({ cartCount = 0, wishlistCount = 0, user = null, onLogout }) => 
               </svg>
             </button>
 
-            {/* Profile/Sign In Icon */}
-{user ? (
-  <button
-    onClick={() => setShowDropdown(!showDropdown)}
-    className="p-2 hover:bg-stone-100 rounded-full"
-    title={user.name || 'Account'}
-  >
-    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-    </svg>
-  </button>
-) : (
-  <Link to="/auth" className="p-2 hover:bg-stone-100 rounded-full" title="Sign In">
-    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-    </svg>
-  </Link>
-)}
+   {/* Profile/Sign In Icon - Mobile Only */}
+<div className="md:hidden">
+  {user ? (
+    <button
+      onClick={() => setShowDropdown(!showDropdown)}
+      className="p-2 hover:bg-stone-100 rounded-full"
+      title={user.name || 'Account'}
+    >
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+      </svg>
+    </button>
+  ) : (
+    <Link to="/auth" className="p-2 hover:bg-stone-100 rounded-full" title="Sign In">
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+      </svg>
+    </Link>
+  )}
+</div>
 
             {/* Wishlist */}
             <Link to="/wishlist" className="relative text-stone-600 hover:text-stone-900 transition-colors">
@@ -102,9 +104,14 @@ const Header = ({ cartCount = 0, wishlistCount = 0, user = null, onLogout }) => 
                 {/* Dropdown */}
                 <div className="absolute right-0 mt-2 w-48 bg-white border border-stone-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                   <div className="py-2">
-                    <Link to="/orders" className="block px-4 py-2 text-sm hover:bg-stone-50">
-                      My Orders
-                    </Link>
+                    {/* My Orders - Track Orders Page */}
+<Link
+  to="/track-order"
+  className="block px-4 py-2 text-sm text-stone-700 hover:bg-stone-100"
+  onClick={() => setShowDropdown(false)}
+>
+  My Orders
+</Link>
                     {user.role === 'admin' && (
                       <Link to="/admin" className="block px-4 py-2 text-sm hover:bg-stone-50">
                         Admin Dashboard

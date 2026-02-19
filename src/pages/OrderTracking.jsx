@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { Button, Input, Badge } from '../components/ui';
 import { useToast } from '../components/ui';
+import { useAuth } from '../hooks/useAuth';
 import { formatNigerianPhone } from '../utils/whatsapp';
 
 const OrderTracking = () => {
+  const { user } = useAuth();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -73,9 +76,19 @@ const OrderTracking = () => {
         <h1 className="font-serif text-3xl md:text-5xl font-semibold mb-4">
           Track Your Order
         </h1>
-        <p className="text-stone-600">
+        <p className="text-stone-600 mb-6">
           Enter your phone number to view your order history
         </p>
+
+        {/* Registration Note */}
+        <div className="bg-stone-100 border-l-4 border-stone-900 p-4 max-w-2xl mx-auto text-left">
+          <p className="text-sm text-stone-700">
+            <span className="font-semibold">Note:</span> Only registered users can track their orders.
+            {!user && (
+              <span> Please <Link to="/auth" className="underline font-medium hover:text-stone-900">sign in</Link> to view your order history.</span>
+            )}
+          </p>
+        </div>
       </div>
 
       {/* Search Form */}
@@ -167,18 +180,39 @@ const OrderTracking = () => {
                   {/* Order Items */}
                   <div>
                     <p className="text-xs text-stone-500 mb-2">Items</p>
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       {order.items.map((item, index) => (
                         <div
                           key={index}
-                          className="flex justify-between text-sm"
+                          className="flex gap-3 text-sm bg-stone-50 p-3 rounded"
                         >
-                          <span className="text-stone-600">
-                            {item.name} ({item.size}) × {item.quantity}
-                          </span>
-                          <span>
-                            ₦{(item.price * item.quantity).toLocaleString('en-NG')}
-                          </span>
+                          {/* Product Image */}
+                          {item.image && (
+                            <div className="w-16 h-16 flex-shrink-0 bg-stone-100">
+                              <img
+                                src={item.image}
+                                alt={item.name}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          )}
+
+                          {/* Product Details */}
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium text-stone-900 mb-1">{item.name}</p>
+                            <div className="text-xs text-stone-600 space-y-0.5">
+                              <p>Size: {item.size}</p>
+                              {item.color && <p>Color: {item.color}</p>}
+                              <p>Qty: {item.quantity}</p>
+                            </div>
+                          </div>
+
+                          {/* Price */}
+                          <div className="text-right flex-shrink-0">
+                            <p className="font-medium">
+                              ₦{(item.price * item.quantity).toLocaleString('en-NG')}
+                            </p>
+                          </div>
                         </div>
                       ))}
                     </div>

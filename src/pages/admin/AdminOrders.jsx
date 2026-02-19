@@ -240,21 +240,39 @@ const AdminOrders = () => {
                     <h3 className="text-sm font-semibold uppercase tracking-wider mb-3">
                       Order Items
                     </h3>
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       {order.items.map((item, index) => (
                         <div
                           key={index}
-                          className="flex justify-between text-sm bg-white p-3"
+                          className="flex gap-4 bg-white p-3 border border-stone-200"
                         >
-                          <div>
-                            <p className="font-medium">{item.name}</p>
-                            <p className="text-stone-600">
-                              Size: {item.size} | Qty: {item.quantity}
+                          {/* Product Image */}
+                          {item.image && (
+                            <div className="w-16 h-16 flex-shrink-0 bg-stone-100">
+                              <img
+                                src={item.image}
+                                alt={item.name}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          )}
+                          
+                          {/* Product Details */}
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium text-sm mb-1">{item.name}</p>
+                            <div className="text-xs text-stone-600 space-y-0.5">
+                              <p>Size: {item.size}</p>
+                              {item.color && <p>Color: {item.color}</p>}
+                              <p>Qty: {item.quantity}</p>
+                            </div>
+                          </div>
+                          
+                          {/* Price */}
+                          <div className="text-right flex-shrink-0">
+                            <p className="font-medium text-sm">
+                              ₦{(item.price * item.quantity).toLocaleString('en-NG')}
                             </p>
                           </div>
-                          <p className="font-medium">
-                            ₦{(item.price * item.quantity).toLocaleString('en-NG')}
-                          </p>
                         </div>
                       ))}
                     </div>

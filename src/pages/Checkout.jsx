@@ -77,7 +77,8 @@ const Checkout = () => {
           size: item.selectedSize,
           color: item.selectedColor || '',
           quantity: item.quantity,
-          price: item.price
+          price: item.price,
+          image: item.image || ''
         })),
         totalPrice: cartTotal,
         status: 'confirmed',
