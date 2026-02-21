@@ -7,7 +7,7 @@ const SizeSelector = ({ sizes, selectedSize, onSelectSize, error }) => {
         Select Size
       </label>
       
-      <div className="flex items-center gap-1.7">
+      <div className="flex items-center gap-1.5">
         {sizes.map(({ size, stock }) => {
           const isOutOfStock = stock === 0;
           const isSelected = selectedSize === size;
