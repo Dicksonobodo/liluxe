@@ -232,7 +232,7 @@ const ProductDetail = () => {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-8 h-8 border border-stone-300 hover:border-stone-900 transition-colors flex items-center justify-center"
+                className="w-7 h-7 border border-stone-300 hover:border-stone-900 transition-colors flex items-center justify-center rounded"
               >
                 -
               </button>
@@ -240,7 +240,7 @@ const ProductDetail = () => {
               <button
                 onClick={() => setQuantity(Math.min(maxQuantity, quantity + 1))}
                 disabled={quantity >= maxQuantity}
-                className="w-8 h-8 border border-stone-300 hover:border-stone-900 transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed rounded"
+                className="w-7 h-7 border border-stone-300 hover:border-stone-900 transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed rounded"
               >
                 +
               </button>
