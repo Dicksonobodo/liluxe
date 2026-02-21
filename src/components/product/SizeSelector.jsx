@@ -18,7 +18,8 @@ const SizeSelector = ({ sizes, selectedSize, onSelectSize, error }) => {
               onClick={() => !isOutOfStock && onSelectSize(size)}
               disabled={isOutOfStock}
               className={`
-                px-3 py-2 border text-sm font-medium transition-all
+                  px-1.5 py-1 border text-sm font-medium transition-all rounded
+
                 ${isSelected 
                   ? 'border-stone-900 bg-stone-900 text-white' 
                   : 'border-stone-300 hover:border-stone-900'
