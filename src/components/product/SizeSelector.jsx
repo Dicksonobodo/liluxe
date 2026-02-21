@@ -18,7 +18,7 @@ const SizeSelector = ({ sizes, selectedSize, onSelectSize, error }) => {
               onClick={() => !isOutOfStock && onSelectSize(size)}
               disabled={isOutOfStock}
               className={`
-                  px-0.5 py-1 border text-sm font-medium transition-all rounded
+                  px-0.5 py-0.5 border text-sm font-medium transition-all rounded
 
                 ${isSelected 
                   ? 'border-stone-900 bg-stone-900 text-white' 

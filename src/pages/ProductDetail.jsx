@@ -240,7 +240,7 @@ const ProductDetail = () => {
               <button
                 onClick={() => setQuantity(Math.min(maxQuantity, quantity + 1))}
                 disabled={quantity >= maxQuantity}
-                className="w-8 h-8 border border-stone-300 hover:border-stone-900 transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-8 h-8 border border-stone-300 hover:border-stone-900 transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed rounded"
               >
                 +
               </button>
@@ -306,7 +306,7 @@ const ProductDetail = () => {
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
-              DISCOUNTS WILL BE AVAILABLE FOR RESGISTERED CUSTOMERS
+              DISCOUNTS WILL BE AVAILABLE FOR REGISTERED CUSTOMERS
             </p>
           </div>
         </div>
