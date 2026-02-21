@@ -7,7 +7,7 @@ const SizeSelector = ({ sizes, selectedSize, onSelectSize, error }) => {
         Select Size
       </label>
       
-      <div className="grid grid-cols-5 md:grid-cols-8 gap-1">
+      <div className="grid grid-cols-5 md:grid-cols-8 gap-6">
         {sizes.map(({ size, stock }) => {
           const isOutOfStock = stock === 0;
           const isSelected = selectedSize === size;
