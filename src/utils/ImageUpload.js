@@ -2,7 +2,7 @@
  * Image Upload Utility using Cloudinary
  */
 
-export const uploadProductImage = async (file) => {
+export const uploadProductImage = async (file, productId) => {
   // Cloudinary configuration
   const cloudName = 'ds5u1pcll';
   const uploadPreset = 'art_shop_preset';
@@ -15,7 +15,7 @@ export const uploadProductImage = async (file) => {
   formData.append('file', file);
   formData.append('upload_preset', uploadPreset);
   formData.append('cloud_name', cloudName);
-  formData.append('folder', 'products'); // Organize images in products folder
+  formData.append('folder', `products${productId ? `/${productId}` : ''}`); // Organize images in products folder
 
   try {
     // Upload to Cloudinary
@@ -28,7 +28,13 @@ export const uploadProductImage = async (file) => {
     );
 
     if (!response.ok) {
-      throw new Error('Upload failed');
+      const errorData = await response.json().catch(() => ({}));
+      console.error('Cloudinary upload failed:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorData
+      });
+      throw new Error(`Upload failed: ${response.status}`);
     }
 
     const data = await response.json();
@@ -37,7 +43,7 @@ export const uploadProductImage = async (file) => {
     return data.secure_url;
   } catch (error) {
     console.error('Cloudinary upload error:', error);
-    throw new Error('Failed to upload image. Please try again.');
+    throw new Error(`Failed to upload image: ${error.message}`);
   }
 };
 
