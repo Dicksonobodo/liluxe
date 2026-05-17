@@ -67,9 +67,10 @@ const ProductForm = () => {
     
     // Validate each image
     for (const file of files) {
-      const validation = validateImage(file);
-      if (!validation.valid) {
-        toast.error(validation.error);
+      try {
+        validateImage(file);
+      } catch (error) {
+        toast.error(error.message);
         return;
       }
     }
