@@ -1,74 +1,71 @@
-import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { storage } from '../lib/firebase';
-
 /**
- * Upload image to Firebase Storage
- * @param {File} file - Image file
- * @param {string} productId - Product ID for organizing images
- * @returns {Promise<string>} - Download URL of uploaded image
+ * Image Upload Utility using Cloudinary
  */
-export const uploadProductImage = async (file, productId) => {
-  if (!file) throw new Error('No file provided');
 
-  // Create unique filename
-  const timestamp = Date.now();
-  const filename = `${timestamp}-${file.name}`;
-  const storageRef = ref(storage, `products/${productId}/${filename}`);
+export const uploadProductImage = async (file) => {
+  // Cloudinary configuration
+  const cloudName = 'ds5u1pcll';
+  const uploadPreset = 'art_shop_preset';
+
+  // Validate image first
+  validateImage(file);
+
+  // Create form data
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', uploadPreset);
+  formData.append('cloud_name', cloudName);
+  formData.append('folder', 'products'); // Organize images in products folder
 
   try {
-    // Upload file
-    await uploadBytes(storageRef, file);
+    // Upload to Cloudinary
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+      {
+        method: 'POST',
+        body: formData
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Upload failed');
+    }
+
+    const data = await response.json();
     
-    // Get download URL
-    const downloadURL = await getDownloadURL(storageRef);
-    return downloadURL;
+    // Return the secure URL of uploaded image
+    return data.secure_url;
   } catch (error) {
-    console.error('Error uploading image:', error);
-    throw error;
+    console.error('Cloudinary upload error:', error);
+    throw new Error('Failed to upload image. Please try again.');
   }
 };
 
-/**
- * Delete image from Firebase Storage
- * @param {string} imageUrl - Full URL of image to delete
- */
-export const deleteProductImage = async (imageUrl) => {
-  try {
-    // Extract path from URL
-    const urlParts = imageUrl.split('/o/');
-    if (urlParts.length < 2) return;
-    
-    const pathPart = urlParts[1].split('?')[0];
-    const path = decodeURIComponent(pathPart);
-    
-    const imageRef = ref(storage, path);
-    await deleteObject(imageRef);
-  } catch (error) {
-    console.error('Error deleting image:', error);
-    // Don't throw - image might already be deleted
-  }
-};
-
-/**
- * Validate image file
- * @param {File} file - Image file to validate
- * @returns {Object} - {valid: boolean, error: string}
- */
 export const validateImage = (file) => {
-  const maxSize = 5 * 1024 * 1024; // 5MB
-  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+  // Allowed image types
+  const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+  
+  // Max file size: 5MB
+  const maxSize = 5 * 1024 * 1024;
 
-  if (!file) {
-    return { valid: false, error: 'No file provided' };
+  // Check file type
+  if (!validTypes.includes(file.type)) {
+    throw new Error('Invalid file type. Please upload JPG, PNG, or WebP images.');
   }
 
-  if (!allowedTypes.includes(file.type)) {
-    return { valid: false, error: 'Only JPG, PNG, and WebP images are allowed' };
-  }
-
+  // Check file size
   if (file.size > maxSize) {
-    return { valid: false, error: 'Image must be less than 5MB' };
+    throw new Error('File too large. Maximum size is 5MB.');
   }
 
-  return { valid: true, error: null };
+  return true;
+};
+
+// Optional: Delete image from Cloudinary (requires authentication)
+// This would need backend implementation for security
+export const deleteProductImage = async (imageUrl) => {
+  // Note: Deleting from Cloudinary requires authenticated requests
+  // For now, images will remain in Cloudinary even after product deletion
+  // You can manually delete from Cloudinary dashboard or implement backend deletion
+  console.log('Image deletion not implemented. Remove manually from Cloudinary dashboard:', imageUrl);
 };
