@@ -28,6 +28,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProducts from './pages/admin/AdminProducts';
 import ProductForm from './pages/admin/ProductForm';
 import AdminOrders from './pages/admin/AdminOrders';
+import AdminReviews from './pages/admin/AdminReviews';
 import AdminSettings from './pages/admin/AdminSettings';
 
 function CustomerLayout() {
@@ -102,6 +103,7 @@ function App() {
                   <Route path="products/new" element={<ProductForm />} />
                   <Route path="products/edit/:id" element={<ProductForm />} />
                   <Route path="orders" element={<AdminOrders />} />
+                  <Route path="reviews" element={<AdminReviews />} />
                   <Route path="settings" element={<AdminSettings />} />
                 </Route>
               </Routes>
