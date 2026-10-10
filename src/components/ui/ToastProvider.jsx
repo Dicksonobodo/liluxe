@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ease } from './motion';
 import { ToastContext } from './ToastContext';
 
 const Toast = ({ message, type, onClose }) => {
@@ -28,7 +30,13 @@ const Toast = ({ message, type, onClose }) => {
   };
 
   return (
-    <div className={`flex items-center gap-3 px-4 py-3 ${styles[type]} min-w-[300px] max-w-md animate-in slide-in-from-top duration-300`}>
+    <motion.div
+      layout
+      initial={{ opacity: 0, x: 48, scale: 0.96 }}
+      animate={{ opacity: 1, x: 0, scale: 1, transition: { duration: 0.35, ease } }}
+      exit={{ opacity: 0, x: 48, transition: { duration: 0.2, ease } }}
+      className={`flex items-center gap-3 px-4 py-3 ${styles[type]} min-w-[300px] max-w-md shadow-lg`}
+    >
       <span>{icons[type]}</span>
       <p className="flex-1 text-sm font-medium">{message}</p>
       <button onClick={onClose} className="hover:opacity-70 transition-opacity">
@@ -36,7 +44,7 @@ const Toast = ({ message, type, onClose }) => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
-    </div>
+    </motion.div>
   );
 };
 
@@ -67,15 +75,17 @@ const ToastProvider = ({ children }) => {
     <ToastContext.Provider value={toast}>
       {children}
       {createPortal(
-        <div className="fixed top-4 right-4 z-50 space-y-2">
-          {toasts.map((toast) => (
-            <Toast
-              key={toast.id}
-              message={toast.message}
-              type={toast.type}
-              onClose={() => removeToast(toast.id)}
-            />
-          ))}
+        <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
+          <AnimatePresence initial={false}>
+            {toasts.map((toast) => (
+              <Toast
+                key={toast.id}
+                message={toast.message}
+                type={toast.type}
+                onClose={() => removeToast(toast.id)}
+              />
+            ))}
+          </AnimatePresence>
         </div>,
         document.body
       )}

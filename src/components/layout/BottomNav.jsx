@@ -1,18 +1,29 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { badgePop } from '../ui/motion';
 
 const NavItem = ({ to, icon, label, count, isActive }) => (
   <Link
     to={to}
-    className={`flex flex-col items-center justify-center gap-1 relative transition-colors ${
+    className={`flex flex-col items-center justify-center gap-1 relative isolate transition-colors active:scale-95 ${
       isActive ? 'text-stone-900' : 'text-stone-400'
     }`}
   >
+    {/* Active indicator - slides between tabs */}
+    {isActive && (
+      <motion.span
+        layoutId="bottom-nav-active"
+        className="absolute -inset-x-1 -inset-y-1.5 bg-stone-100 rounded-xl -z-10"
+        transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+      />
+    )}
+
     {/* Notification Badge */}
     {count > 0 && (
-      <span className="absolute -top-1 left-1/2 -translate-x-1/2 translate-x-2 bg-stone-900 text-white text-xs font-medium rounded-full h-5 w-5 flex items-center justify-center">
+      <motion.span key={count} {...badgePop} className="absolute -top-1 left-1/2 -translate-x-1/2 translate-x-2 bg-stone-900 text-white text-xs font-medium rounded-full h-5 w-5 flex items-center justify-center">
         {count > 9 ? '9+' : count}
-      </span>
+      </motion.span>
     )}
     
     {/* Icon */}

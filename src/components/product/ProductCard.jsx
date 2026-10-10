@@ -26,7 +26,7 @@ const ProductCard = ({ product }) => {
     <a href={`/product/${id}`} onClick={handleClick} className="group block relative">
       {/* Loading Overlay */}
       {loading && (
-        <div className="absolute inset-0 bg-white/80 z-10 flex items-center justify-center">
+        <div className="absolute inset-0 bg-white/80 backdrop-blur-[2px] z-10 flex items-center justify-center transition-opacity">
           <div className="w-8 h-8 border-2 border-stone-900 border-t-transparent rounded-full animate-spin"></div>
         </div>
       )}
@@ -35,7 +35,7 @@ const ProductCard = ({ product }) => {
         <img
           src={mainImage}
           alt={name}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           loading="lazy"
         />
         

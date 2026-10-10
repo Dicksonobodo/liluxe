@@ -1,8 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import ProductGrid from '../components/product/ProductGrid';
 import { useProducts } from '../hooks/useProducts';
 import { Button } from '../components/ui';
+import Reveal from '../components/ui/Reveal';
+import { fadeUp, stagger } from '../components/ui/motion';
+
+const MotionLink = motion.create(Link);
 
 const Home = () => {
   const { products, loading } = useProducts({ sortBy: 'newest' });
@@ -24,27 +29,41 @@ const Home = () => {
       {/* Hero Section */}
       <section className="relative h-[60vh] md:h-[80vh] bg-stone-100 flex items-center">
         <div className="max-w-screen-xl mx-auto px-4 md:px-6 w-full">
-          <div className="max-w-2xl">
-            <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-semibold mb-6 leading-tight">
+          <motion.div
+            className="max-w-2xl"
+            initial="hidden"
+            animate="visible"
+            variants={stagger(0.12, 0.15)}
+          >
+            <motion.h1 variants={fadeUp} className="font-serif text-4xl md:text-6xl lg:text-7xl font-semibold mb-6 leading-tight">
               Luxury Fashion,<br />Redefined
-            </h1>
-            <p className="text-lg md:text-xl text-stone-600 mb-8 leading-relaxed">
+            </motion.h1>
+            <motion.p variants={fadeUp} className="text-lg md:text-xl text-stone-600 mb-8 leading-relaxed">
               Discover timeless pieces crafted with precision and elegance for the modern individual.
-            </p>
-            <Link to="/shop">
-              <Button variant="primary" size="lg">
-                Shop Collection
-              </Button>
-            </Link>
-          </div>
+            </motion.p>
+            <motion.div variants={fadeUp}>
+              <Link to="/shop">
+                <Button variant="primary" size="lg">
+                  Shop Collection
+                </Button>
+              </Link>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* Categories Section */}
       <section className="max-w-screen-xl mx-auto px-4 md:px-6 py-16 md:py-24">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+          variants={stagger(0.12)}
+        >
           {/* Clothes */}
-          <Link
+          <MotionLink
+            variants={fadeUp}
             to="/shop?category=clothes"
             className="group relative h-96 overflow-hidden"
           >
@@ -52,7 +71,7 @@ const Home = () => {
             <img 
               src={categoryImages.clothes}
               alt="Clothes"
-              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1200ms] ease-out"
             />
             
             {/* Gradient Overlay */}
@@ -65,14 +84,16 @@ const Home = () => {
                   Cloths
                 </h3>
                 <p className="text-white/90 text-sm uppercase tracking-wider">
-                  Explore Collection Here →
+                  Explore Collection Here{' '}
+                  <span className="inline-block transition-transform duration-300 group-hover:translate-x-1.5">→</span>
                 </p>
               </div>
             </div>
-          </Link>
+          </MotionLink>
 
           {/* Bags */}
-          <Link
+          <MotionLink
+            variants={fadeUp}
             to="/shop?category=bags"
             className="group relative h-96 overflow-hidden"
           >
@@ -80,7 +101,7 @@ const Home = () => {
             <img 
               src={categoryImages.bags}
               alt="Bags"
-              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1200ms] ease-out"
             />
             
             {/* Gradient Overlay */}
@@ -93,14 +114,16 @@ const Home = () => {
                   Bags
                 </h3>
                 <p className="text-white/90 text-sm uppercase tracking-wider">
-                  Explore Collection Here →
+                  Explore Collection Here{' '}
+                  <span className="inline-block transition-transform duration-300 group-hover:translate-x-1.5">→</span>
                 </p>
               </div>
             </div>
-          </Link>
+          </MotionLink>
 
           {/* Shoes */}
-          <Link
+          <MotionLink
+            variants={fadeUp}
             to="/shop?category=shoes"
             className="group relative h-96 overflow-hidden"
           >
@@ -108,7 +131,7 @@ const Home = () => {
             <img 
               src={categoryImages.shoes}
               alt="Shoes"
-              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1200ms] ease-out"
             />
             
             {/* Gradient Overlay */}
@@ -121,18 +144,19 @@ const Home = () => {
                   Shoes
                 </h3>
                 <p className="text-white/90 text-sm uppercase tracking-wider">
-                  Explore Collection Here →
+                  Explore Collection Here{' '}
+                  <span className="inline-block transition-transform duration-300 group-hover:translate-x-1.5">→</span>
                 </p>
               </div>
             </div>
-          </Link>
-        </div>
+          </MotionLink>
+        </motion.div>
       </section>
 
       {/* New Arrivals Section */}
       <section className="bg-stone-50 py-16 md:py-24">
         <div className="max-w-screen-xl mx-auto px-4 md:px-6">
-          <div className="flex items-center justify-between mb-8 md:mb-12">
+          <Reveal className="flex items-center justify-between mb-8 md:mb-12">
             <div>
               <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-2">
                 New Arrivals
@@ -144,7 +168,7 @@ const Home = () => {
                 View All
               </Button>
             </Link>
-          </div>
+          </Reveal>
 
           <ProductGrid products={featuredProducts} loading={loading} />
         </div>
@@ -152,7 +176,7 @@ const Home = () => {
 
       {/* About Section */}
       <section className="max-w-screen-xl mx-auto px-4 md:px-6 py-16 md:py-24">
-        <div className="max-w-3xl mx-auto text-center">
+        <Reveal className="max-w-3xl mx-auto text-center">
           <h2 className="font-serif text-3xl md:text-5xl font-semibold mb-6">
             About LILUXE
           </h2>
@@ -164,7 +188,7 @@ const Home = () => {
               Explore Our Story
             </Button>
           </Link>
-        </div>
+        </Reveal>
       </section>
     </div>
   );

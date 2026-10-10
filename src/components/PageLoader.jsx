@@ -1,13 +1,29 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import { ease } from './ui/motion';
 
 const PageLoader = () => {
   return (
-    <div className="fixed inset-0 bg-white z-50 flex items-center justify-center">
-      <div className="text-center">
+    <motion.div
+      className="fixed inset-0 bg-white z-[60] flex items-center justify-center"
+      exit={{ opacity: 0, transition: { duration: 0.5, ease } }}
+    >
+      <motion.div
+        className="text-center"
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -12, transition: { duration: 0.4, ease } }}
+        transition={{ duration: 0.6, ease }}
+      >
         {/* Logo or Brand Name */}
-        <h1 className="font-serif text-4xl font-semibold mb-8 text-stone-900">
+        <motion.h1
+          className="font-serif text-4xl font-semibold mb-8 text-stone-900"
+          initial={{ letterSpacing: '0.3em', opacity: 0 }}
+          animate={{ letterSpacing: '0.05em', opacity: 1 }}
+          transition={{ duration: 1, ease }}
+        >
           LILUXE
-        </h1>
+        </motion.h1>
         
         {/* Spinner */}
         <div className="relative w-16 h-16 mx-auto mb-4">
@@ -18,8 +34,8 @@ const PageLoader = () => {
         <p className="text-sm text-stone-600 uppercase tracking-wider">
           Loading...
         </p>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

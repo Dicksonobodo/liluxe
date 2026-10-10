@@ -9,7 +9,7 @@ const Button = ({
   loading = false,
   ...props 
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center font-medium tracking-tight transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseStyles = 'inline-flex items-center justify-center font-medium tracking-tight transition-all duration-200 ease-out active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100';
   
   const variants = {
     primary: 'bg-stone-900 text-stone-50 hover:bg-stone-800 active:bg-stone-950',

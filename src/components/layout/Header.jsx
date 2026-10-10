@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+import { badgePop, ease } from '../ui/motion';
 
 const Header = ({ cartCount = 0, wishlistCount = 0, user = null, onLogout }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -53,9 +55,9 @@ const Header = ({ cartCount = 0, wishlistCount = 0, user = null, onLogout }) => 
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
               {wishlistCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-stone-900 text-white text-xs font-medium rounded-full h-5 w-5 flex items-center justify-center">
+                <motion.span key={wishlistCount} {...badgePop} className="absolute -top-2 -right-2 bg-stone-900 text-white text-xs font-medium rounded-full h-5 w-5 flex items-center justify-center">
                   {wishlistCount > 9 ? '9+' : wishlistCount}
-                </span>
+                </motion.span>
               )}
             </Link>
 
@@ -65,9 +67,9 @@ const Header = ({ cartCount = 0, wishlistCount = 0, user = null, onLogout }) => 
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>
               {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-stone-900 text-white text-xs font-medium rounded-full h-5 w-5 flex items-center justify-center">
+                <motion.span key={cartCount} {...badgePop} className="absolute -top-2 -right-2 bg-stone-900 text-white text-xs font-medium rounded-full h-5 w-5 flex items-center justify-center">
                   {cartCount > 9 ? '9+' : cartCount}
-                </span>
+                </motion.span>
               )}
             </Link>
 
@@ -81,7 +83,7 @@ const Header = ({ cartCount = 0, wishlistCount = 0, user = null, onLogout }) => 
                 </button>
                 
                 {/* Dropdown */}
-                <div className="absolute right-0 mt-2 w-48 bg-white border border-stone-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                <div className="absolute right-0 mt-2 w-48 bg-white border border-stone-200 shadow-lg opacity-0 invisible translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 ease-out">
                   <div className="py-2">
                     <button
                       onClick={() => navigate('/track-order')}
@@ -118,9 +120,9 @@ const Header = ({ cartCount = 0, wishlistCount = 0, user = null, onLogout }) => 
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
               {wishlistCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-stone-900 text-white text-xs font-medium rounded-full h-5 w-5 flex items-center justify-center">
+                <motion.span key={wishlistCount} {...badgePop} className="absolute -top-2 -right-2 bg-stone-900 text-white text-xs font-medium rounded-full h-5 w-5 flex items-center justify-center">
                   {wishlistCount > 9 ? '9+' : wishlistCount}
-                </span>
+                </motion.span>
               )}
             </Link> */}
 
@@ -130,9 +132,9 @@ const Header = ({ cartCount = 0, wishlistCount = 0, user = null, onLogout }) => 
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>
               {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-stone-900 text-white text-xs font-medium rounded-full h-5 w-5 flex items-center justify-center">
+                <motion.span key={cartCount} {...badgePop} className="absolute -top-2 -right-2 bg-stone-900 text-white text-xs font-medium rounded-full h-5 w-5 flex items-center justify-center">
                   {cartCount > 9 ? '9+' : cartCount}
-                </span>
+                </motion.span>
               )}
             </Link>
 
@@ -148,8 +150,15 @@ const Header = ({ cartCount = 0, wishlistCount = 0, user = null, onLogout }) => 
                 </svg>
 
                 {/* Mobile Dropdown */}
+                <AnimatePresence>
                 {showDropdown && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white border border-stone-200 shadow-lg z-50">
+                  <motion.div
+                    initial={{ opacity: 0, y: -6, scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                    transition={{ duration: 0.18, ease }}
+                    className="absolute right-0 mt-2 w-48 bg-white border border-stone-200 shadow-lg z-50 origin-top-right"
+                  >
                     <div className="py-2">
                       <button
                         onClick={() => {
@@ -181,8 +190,9 @@ const Header = ({ cartCount = 0, wishlistCount = 0, user = null, onLogout }) => 
                         Sign Out
                       </button>
                     </div>
-                  </div>
+                  </motion.div>
                 )}
+                </AnimatePresence>
               </button>
             ) : (
               <Link to="/auth" className="p-1 hover:bg-stone-100 rounded-full transition-colors" title="Sign In">
@@ -209,8 +219,16 @@ const Header = ({ cartCount = 0, wishlistCount = 0, user = null, onLogout }) => 
         </div>
 
         {/* Mobile Menu */}
+        <AnimatePresence initial={false}>
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-stone-200 py-4 space-y-4">
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease }}
+            className="md:hidden overflow-hidden"
+          >
+          <div className="border-t border-stone-200 py-4 space-y-4">
             <Link
               to="/shop"
               className="block text-sm uppercase tracking-wider"
@@ -250,7 +268,9 @@ const Header = ({ cartCount = 0, wishlistCount = 0, user = null, onLogout }) => 
               </Link>
             )}
           </div>
+          </motion.div>
         )}
+        </AnimatePresence>
       </div>
     </header>
   );

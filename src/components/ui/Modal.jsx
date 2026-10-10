@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+import { backdrop, popIn } from './motion';
 
 const Modal = ({ isOpen, onClose, children, title, size = 'md' }) => {
   useEffect(() => {
@@ -13,8 +15,6 @@ const Modal = ({ isOpen, onClose, children, title, size = 'md' }) => {
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
-
   const sizes = {
     sm: 'max-w-md',
     md: 'max-w-lg',
@@ -23,36 +23,44 @@ const Modal = ({ isOpen, onClose, children, title, size = 'md' }) => {
   };
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div 
-        className="absolute inset-0 bg-stone-900/50 backdrop-blur-sm"
-        onClick={onClose}
-      />
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <motion.div
+            {...backdrop}
+            className="absolute inset-0 bg-stone-900/50 backdrop-blur-sm"
+            onClick={onClose}
+          />
       
-      {/* Modal */}
-      <div className={`relative bg-white ${sizes[size]} w-full max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-200`}>
-        {/* Header */}
-        {title && (
-          <div className="flex items-center justify-between p-6 border-b border-stone-200">
-            <h2 className="text-2xl font-serif font-semibold">{title}</h2>
-            <button
-              onClick={onClose}
-              className="text-stone-400 hover:text-stone-900 transition-colors"
-            >
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-        )}
+          {/* Modal */}
+          <motion.div
+            {...popIn}
+            className={`relative bg-white ${sizes[size]} w-full max-h-[90vh] overflow-y-auto`}
+          >
+            {/* Header */}
+            {title && (
+              <div className="flex items-center justify-between p-6 border-b border-stone-200">
+                <h2 className="text-2xl font-serif font-semibold">{title}</h2>
+                <button
+                  onClick={onClose}
+                  className="text-stone-400 hover:text-stone-900 transition-colors"
+                >
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            )}
         
-        {/* Content */}
-        <div className="p-6">
-          {children}
+            {/* Content */}
+            <div className="p-6">
+              {children}
+            </div>
+          </motion.div>
         </div>
-      </div>
-    </div>,
+      )}
+    </AnimatePresence>,
     document.body
   );
 };

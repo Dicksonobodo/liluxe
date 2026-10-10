@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
+import { ease } from './components/ui/motion';
 import { ToastProvider } from './components/ui';
 import AuthProvider from './context/AuthProvider';
 import CartProvider from './context/CartProvider';
@@ -35,6 +37,7 @@ function CustomerLayout() {
   const { user, logout } = useAuth();
   const { cartCount } = useCart();
   const { wishlistCount } = useWishlist();
+  const location = useLocation();
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -44,8 +47,14 @@ function CustomerLayout() {
         cartCount={cartCount}
         wishlistCount={wishlistCount}
       />
-      <main className="flex-1">
-        <Routes>
+      <motion.main
+        key={location.pathname}
+        className="flex-1"
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease }}
+      >
+        <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/product/:id" element={<ProductDetail />} />
@@ -56,7 +65,7 @@ function CustomerLayout() {
           <Route path="/track-order" element={<OrderTracking />} />
           <Route path="/auth" element={<Auth />} />
         </Routes>
-      </main>
+      </motion.main>
       <Footer />
       <BottomNav cartCount={cartCount} wishlistCount={wishlistCount} />
     </div>
@@ -75,43 +84,45 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  if (initialLoading) {
-    return <PageLoader />;
-  }
-
   return (
-    <ToastProvider>
-      <AuthProvider>
-        <CartProvider>
-          <WishlistProvider>
-            <BrowserRouter>
-              <Routes>
-                {/* Customer Routes */}
-                <Route path="/*" element={<CustomerLayout />} />
+    <MotionConfig reducedMotion="user">
+      {/* Loader fades out over the app as it mounts */}
+      <AnimatePresence>{initialLoading && <PageLoader key="loader" />}</AnimatePresence>
+      {!initialLoading && (
+        <ToastProvider>
+          <AuthProvider>
+            <CartProvider>
+              <WishlistProvider>
+                <BrowserRouter>
+                  <Routes>
+                    {/* Customer Routes */}
+                    <Route path="/*" element={<CustomerLayout />} />
 
-                {/* Admin Routes */}
-                <Route
-                  path="/admin/*"
-                  element={
-                    <ProtectedRoute adminOnly>
-                      <AdminLayout />
-                    </ProtectedRoute>
-                  }
-                >
-                  <Route index element={<AdminDashboard />} />
-                  <Route path="products" element={<AdminProducts />} />
-                  <Route path="products/new" element={<ProductForm />} />
-                  <Route path="products/edit/:id" element={<ProductForm />} />
-                  <Route path="orders" element={<AdminOrders />} />
-                  <Route path="reviews" element={<AdminReviews />} />
-                  <Route path="settings" element={<AdminSettings />} />
-                </Route>
-              </Routes>
-            </BrowserRouter>
-          </WishlistProvider>
-        </CartProvider>
-      </AuthProvider>
-    </ToastProvider>
+                    {/* Admin Routes */}
+                    <Route
+                      path="/admin/*"
+                      element={
+                        <ProtectedRoute adminOnly>
+                          <AdminLayout />
+                        </ProtectedRoute>
+                      }
+                    >
+                      <Route index element={<AdminDashboard />} />
+                      <Route path="products" element={<AdminProducts />} />
+                      <Route path="products/new" element={<ProductForm />} />
+                      <Route path="products/edit/:id" element={<ProductForm />} />
+                      <Route path="orders" element={<AdminOrders />} />
+                      <Route path="reviews" element={<AdminReviews />} />
+                      <Route path="settings" element={<AdminSettings />} />
+                    </Route>
+                  </Routes>
+                </BrowserRouter>
+              </WishlistProvider>
+            </CartProvider>
+          </AuthProvider>
+        </ToastProvider>
+      )}
+    </MotionConfig>
   );
 }
 

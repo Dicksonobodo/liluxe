@@ -72,3 +72,16 @@ input[type="number"] {
   background-color: var(--color-stone-900);
   color: var(--color-stone-50);
 }
+
+/* Respect reduced-motion preferences for CSS transitions/animations
+   (framer-motion is handled by <MotionConfig reducedMotion="user">) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

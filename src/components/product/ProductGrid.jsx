@@ -1,5 +1,7 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import ProductCard from './ProductCard';
+import { fadeUp, stagger } from '../ui/motion';
 import { ProductGridSkeleton } from '../ui/Skeleton';
 
 const ProductGrid = ({ products, loading = false }) => {
@@ -30,11 +32,19 @@ const ProductGrid = ({ products, loading = false }) => {
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+    <motion.div
+      className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-60px' }}
+      variants={stagger(0.07)}
+    >
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+        <motion.div key={product.id} variants={fadeUp}>
+          <ProductCard product={product} />
+        </motion.div>
       ))}
-    </div>
+    </motion.div>
   );
 };
 
