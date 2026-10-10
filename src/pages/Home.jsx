@@ -7,8 +7,6 @@ import { Button } from '../components/ui';
 import Reveal from '../components/ui/Reveal';
 import { fadeUp, stagger } from '../components/ui/motion';
 
-const MotionLink = motion.create(Link);
-
 const Home = () => {
   const { products, loading } = useProducts({ sortBy: 'newest' });
   const featuredProducts = products.slice(0, 4); // Show only 4 products
@@ -54,16 +52,10 @@ const Home = () => {
 
       {/* Categories Section */}
       <section className="max-w-screen-xl mx-auto px-4 md:px-6 py-16 md:py-24">
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8"
-          // Animate on mount (not on scroll) so the tiles can never get stuck hidden
-          initial="hidden"
-          animate="visible"
-          variants={stagger(0.12, 0.35)}
-        >
+        {/* Kept static: fading these in while their large images load left them blank on some phones */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {/* Clothes */}
-          <MotionLink
-            variants={fadeUp}
+          <Link
             to="/shop?category=clothes"
             className="group relative h-96 overflow-hidden"
           >
@@ -89,11 +81,10 @@ const Home = () => {
                 </p>
               </div>
             </div>
-          </MotionLink>
+          </Link>
 
           {/* Bags */}
-          <MotionLink
-            variants={fadeUp}
+          <Link
             to="/shop?category=bags"
             className="group relative h-96 overflow-hidden"
           >
@@ -119,11 +110,10 @@ const Home = () => {
                 </p>
               </div>
             </div>
-          </MotionLink>
+          </Link>
 
           {/* Shoes */}
-          <MotionLink
-            variants={fadeUp}
+          <Link
             to="/shop?category=shoes"
             className="group relative h-96 overflow-hidden"
           >
@@ -149,8 +139,8 @@ const Home = () => {
                 </p>
               </div>
             </div>
-          </MotionLink>
-        </motion.div>
+          </Link>
+        </div>
       </section>
 
       {/* New Arrivals Section */}
