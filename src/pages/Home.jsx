@@ -56,10 +56,10 @@ const Home = () => {
       <section className="max-w-screen-xl mx-auto px-4 md:px-6 py-16 md:py-24">
         <motion.div
           className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8"
+          // Animate on mount (not on scroll) so the tiles can never get stuck hidden
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
-          variants={stagger(0.12)}
+          animate="visible"
+          variants={stagger(0.12, 0.35)}
         >
           {/* Clothes */}
           <MotionLink
